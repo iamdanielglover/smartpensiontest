@@ -16,32 +16,12 @@ class Loginfo
     end
 
     def self.createOrganisedHash
-        list = {
-            "/about" => [], 
-            "/about/2" => [], 
-            "/contact" => [], 
-            "/help_page" => [], 
-            "/home" => [], 
-            "/index" => []
-        }
-        
-        @@all.select do |visit|
-            if (visit.route === '/about')
-                list["/about"].push(visit)
-            elsif (visit.route === '/about/2')
-                list["/about/2"].push(visit)
-            elsif (visit.route === '/contact')
-                list["/contact"].push(visit)
-            elsif (visit.route === '/help_page/1')
-                list["/help_page"].push(visit)
-            elsif (visit.route === '/home')
-                list["/home"].push(visit)
-            elsif (visit.route === '/index')
-                list["/index"].push(visit)   
-            end
+        @@all.reduce({}) do |list, visit| 
+            list[visit.route] = list[visit.route] || []
+
+            list[visit.route] << visit
+            list
         end
-        
-        return list
     end
 
     def self.orderByTotalVisits
