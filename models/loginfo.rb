@@ -42,20 +42,25 @@ class Loginfo
 
     def self.orderByUniqueVisits
         data = Loginfo.createOrganisedHash
-        uniqueIpVisits = {}
         list = {}
+        superList = {}
+        ultimateList = {}
         
         data.each do |key, value|
-             uniqueIpVisits[key] = data[key].uniq! {|line| line.ip}.length
-        end
-        
-        uniqueIpVisits = uniqueIpVisits.sort_by { |key, value| value }.reverse
-
-        uniqueIpVisits.each do |element|
-            list[element[0]] = element[1]
+             list[key] = data[key].uniq {|line| line.ip}
         end
 
-        return list
+        list.each do |key, value|
+            superList[key] = value.length
+        end
+
+        superList = superList.sort_by {|key, value| value }.reverse
+
+        superList.each do |element|
+            ultimateList[element[0]] = element[1]
+        end
+
+        ultimateList
     end
 
 end
